@@ -44,12 +44,12 @@ enum ToolKind: String, CaseIterable, Identifiable, Hashable {
 
     var title: String {
         switch self {
-        case .skills: String(localized: "Skills", bundle: .module)
-        case .subagents: String(localized: "Subagents", bundle: .module)
-        case .commands: String(localized: "Commands", bundle: .module)
-        case .rules: String(localized: "Rules", bundle: .module)
-        case .mcp: String(localized: "MCP", bundle: .module)
-        case .hooks: String(localized: "Hooks", bundle: .module)
+        case .skills: String(localized: "Skills", bundle: .agentHub)
+        case .subagents: String(localized: "Subagents", bundle: .agentHub)
+        case .commands: String(localized: "Commands", bundle: .agentHub)
+        case .rules: String(localized: "Rules", bundle: .agentHub)
+        case .mcp: String(localized: "MCP", bundle: .agentHub)
+        case .hooks: String(localized: "Hooks", bundle: .agentHub)
         }
     }
 }

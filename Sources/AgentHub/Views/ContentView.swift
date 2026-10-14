@@ -28,9 +28,9 @@ struct ContentView: View {
             }
             ToolbarItem(placement: .primaryAction) {
                 Button { model.reload() } label: {
-                    Label(String(localized: "Reload", bundle: .module), systemImage: "arrow.clockwise")
+                    Label(String(localized: "Reload", bundle: .agentHub), systemImage: "arrow.clockwise")
                 }
-                .help(String(localized: "Reload", bundle: .module))
+                .help(String(localized: "Reload", bundle: .agentHub))
             }
         }
     }
@@ -60,11 +60,11 @@ struct MissingLibraryView: View {
 
     var body: some View {
         ContentUnavailableView {
-            Label(String(localized: "No tool library yet", bundle: .module), systemImage: "books.vertical")
+            Label(String(localized: "No tool library yet", bundle: .agentHub), systemImage: "books.vertical")
         } description: {
-            Text("Create a library at \(model.displayPath) to see your skills, agents and more here.", bundle: .module)
+            Text("Create a library at \(model.displayPath) to see your skills, agents and more here.", bundle: .agentHub)
         } actions: {
-            Button(String(localized: "Reload", bundle: .module)) { model.reload() }
+            Button(String(localized: "Reload", bundle: .agentHub)) { model.reload() }
         }
     }
 }

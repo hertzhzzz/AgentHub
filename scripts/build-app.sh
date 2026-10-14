@@ -28,6 +28,7 @@ cp Resources/AppIcon.icns "$APP/Contents/Resources/AppIcon.icns"
 for b in "$BIN_DIR"/*.bundle; do
   [ -e "$b" ] && cp -R "$b" "$APP/Contents/Resources/"
 done
+[ -d "$APP/Contents/Resources/AgentHub_AgentHub.bundle" ] || { echo "error: resource bundle missing from app" >&2; exit 1; }
 
 echo "==> Fetching rulesync $RS_VERSION ($RS_ARCH)"
 CACHE="$ROOT/.cache/rulesync-$RS_VERSION"

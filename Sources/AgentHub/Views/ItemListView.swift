@@ -18,7 +18,7 @@ struct ItemListView: View {
                 .listRowInsets(EdgeInsets(top: 6, leading: 12, bottom: 6, trailing: 12))
         }
         .listStyle(.inset(alternatesRowBackgrounds: true))
-        .searchable(text: $query, prompt: Text("Search", bundle: .module))
+        .searchable(text: $query, prompt: Text("Search", bundle: .agentHub))
         .overlay {
             if items.isEmpty {
                 if query.isEmpty {
@@ -101,15 +101,15 @@ struct AgentBadge: View {
 
     private var stateText: String {
         switch support {
-        case .enabled: String(localized: "Enabled", bundle: .module)
-        case .off: String(localized: "Off", bundle: .module)
-        case .unsupported: String(localized: "Doesn't support", bundle: .module)
+        case .enabled: String(localized: "Enabled", bundle: .agentHub)
+        case .off: String(localized: "Off", bundle: .agentHub)
+        case .unsupported: String(localized: "Doesn't support", bundle: .agentHub)
         }
     }
 
     private var help: String {
         if support == .unsupported {
-            return String(localized: "Pi doesn't support subagents", bundle: .module)
+            return String(localized: "Pi doesn't support subagents", bundle: .agentHub)
         }
         return "\(agent.displayName): \(stateText)"
     }

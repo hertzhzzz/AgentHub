@@ -13,7 +13,7 @@ struct AgentHubApp: App {
         .defaultSize(width: 1040, height: 700)
         .commands {
             CommandGroup(after: .toolbar) {
-                Button(String(localized: "Reload", bundle: .module)) { model.reload() }
+                Button(String(localized: "Reload", bundle: .agentHub)) { model.reload() }
                     .keyboardShortcut("r", modifiers: .command)
             }
         }
