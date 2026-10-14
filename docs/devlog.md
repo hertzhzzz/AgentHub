@@ -2,6 +2,14 @@
 
 Newest first.
 
+## 2026-10-14 — Day 1, later: v0.1 ships
+
+- AgentHub v0.1.1 is out. Install with one line: `curl -fsSL https://raw.githubusercontent.com/hertzhzzz/AgentHub/main/scripts/install.sh | bash`.
+- What it does today: a read-only view of your tool library. Skills, subagents, commands, rules, MCP servers and hooks, each with a badge showing whether Claude Code, Codex and Pi get it. English and Chinese UI.
+- GitHub Actions builds an Apple silicon and an Intel version on every tag and attaches them to the release with checksums.
+- v0.1.0 crashed on launch. SwiftPM's `Bundle.module` looks for resources next to the `.app`, not inside it, and on the build machine it quietly fell back to the build folder, so local tests passed. Fix: look in `Contents/Resources` first. Lesson: test the packaged app with the build folder moved away.
+- Next: in-app updates, then turning tools on and off per agent.
+
 ## 2026-10-14 — Day 1: research and the plan
 
 - Surveyed the existing managers: CC Switch, Skills Manager, vercel skills and rulesync. Each solves part of the problem; none gives one library with per-agent control in a native app.
