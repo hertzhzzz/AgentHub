@@ -1,0 +1,13 @@
+# AgentHub devlog
+
+Newest first.
+
+## 2026-10-14 — Day 1: research and the plan
+
+- Surveyed the existing managers: CC Switch, Skills Manager, vercel skills and rulesync. Each solves part of the problem; none gives one library with per-agent control in a native app.
+- Decision: use rulesync as the engine and build a native macOS app on top of it, instead of writing a sync engine from scratch.
+- Tested rulesync against Claude Code, Codex and Pi in a sandbox. Skills, MCP servers and rules all generated correctly for each agent.
+- Gotchas found: `--delete` removes skills it does not manage; the MCP and hooks sections are replaced wholesale rather than merged; Pi reads skills from two places and can see them twice; Codex does not expand `${VAR}` in MCP config.
+- Consolidated the author's own setup: 80 live skills, duplicates removed, and every agent still sees the same set as before.
+- Distribution: a one-line installer that downloads from GitHub Releases. Homebrew dropped support for apps that fail Gatekeeper, and files fetched with curl are not quarantined, so the app opens directly.
+- Next: v0.1, a read-only preview that shows what each agent currently sees.

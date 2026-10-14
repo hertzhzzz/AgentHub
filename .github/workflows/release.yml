@@ -1,0 +1,74 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: macos-15
+    strategy:
+      matrix:
+        arch: [arm64, x86_64]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select latest Xcode
+        run: |
+          latest="$(printf "%s\n" /Applications/Xcode*.app | sort -V | tail -1)"
+          sudo xcode-select -s "$latest/Contents/Developer"
+          swift --version
+
+      - name: Work out version
+        id: ver
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
+            v="${GITHUB_REF_NAME#v}"
+          else
+            v="$(tr -d '[:space:]' < VERSION)"
+          fi
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+
+      - name: Build
+        run: scripts/build-app.sh "${{ matrix.arch }}" "${{ steps.ver.outputs.version }}"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AgentHub-macos-${{ matrix.arch }}
+          path: dist/AgentHub-macos-${{ matrix.arch }}.zip
+          if-no-files-found: error
+
+  release:
+    needs: build
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: assets
+          merge-multiple: true
+
+      - name: Checksums
+        working-directory: assets
+        run: shasum -a 256 AgentHub-macos-*.zip > SHA256SUMS && cat SHA256SUMS
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
+            tag="${GITHUB_REF_NAME}"
+          else
+            tag="v$(tr -d '[:space:]' < VERSION)"
+          fi
+          files=(assets/AgentHub-macos-arm64.zip assets/AgentHub-macos-x86_64.zip assets/SHA256SUMS)
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release upload "$tag" "${files[@]}" --clobber
+          else
+            gh release create "$tag" "${files[@]}" --title "AgentHub $tag" --generate-notes --target "$GITHUB_SHA"
+          fi

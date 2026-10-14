@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: swift build
+      - name: Test
+        run: swift test
+      - name: Check shell scripts
+        run: |
+          bash -n scripts/install.sh
+          command -v shellcheck >/dev/null || brew install shellcheck
+          shellcheck scripts/*.sh
